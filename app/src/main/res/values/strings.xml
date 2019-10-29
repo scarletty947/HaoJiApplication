@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">HaoJiApplication</string>
+    <string name="title_home">首页</string>
+    <string name="title_dashboard">管理</string>
+    <string name="title_notifications">发现</string>
+    <string name="app">好集</string>
+    <string name="add">新建</string>
+    <string name="history">最近</string>
+    <string name="selectpicture">选择上传</string>
+    <string name="cancel">取消</string>
+    <string name="newCatName">类别名称</string>
+    <string name="newCategary">新建类别</string>
+    <string name="CFImage">上传封面</string>
+    <string name="yes">确认</string>
+    <string name="booklist">书目</string>
+    <string name="bookname">书名</string>
+    <string name="bookauthor">作者</string>
+    <string name="booktime">阅读时间</string>
+
+
+</resources>
