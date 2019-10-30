@@ -36,6 +36,7 @@ import com.example.haojiapplication.ItemPictureManager;
 import com.example.haojiapplication.MainActivity;
 import com.example.haojiapplication.PicItem;
 import com.example.haojiapplication.R;
+import com.example.haojiapplication.compress;
 import com.example.haojiapplication.ui.dashboard.DashboardViewModel;
 
 import java.io.FileNotFoundException;
@@ -127,7 +128,9 @@ public class AddFragment extends Fragment{
             ContentResolver cr = getActivity().getContentResolver();
             try {
                 //获取图片
+
                 bitmap = BitmapFactory.decodeStream(cr.openInputStream(uri));
+                bitmap=compress.compressScale(bitmap);
                 CfImage.setImageBitmap(bitmap);
             } catch (FileNotFoundException e) {
                 Log.e("Exception", e.getMessage(), e);

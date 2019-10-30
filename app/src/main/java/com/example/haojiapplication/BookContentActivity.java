@@ -161,6 +161,7 @@ public class BookContentActivity extends AppCompatActivity implements View.OnCli
                 if (newbitmap != null) {
                     Log.i("bimap", "onItemClick:ItemValue" + newbitmap);
                     Log.i("bipmap", "onItemClick:ItemValue" + manager.img2byte(newbitmap));
+                    newbitmap=compress.compressScale(newbitmap);
                     picItem.setNotePicture(manager.img2byte(newbitmap));
                     manager.add(picItem);
                 } else {

@@ -10,9 +10,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center|center_horizontal|center_vertical"
         android:adjustViewBounds="true"
-        android:maxWidth="64dp"
-        android:maxHeight="64dp"
-        android:paddingTop="10dp"
+        android:maxWidth="100dp"
+        android:maxHeight="120dp"
+        android:minWidth="100dp"
+        android:minHeight="120dp"
         android:scaleType="fitXY" />
 
     <TextView
@@ -22,5 +23,6 @@
         android:layout_gravity="center|center_horizontal|center_vertical"
         android:layout_weight="1"
         android:gravity="center|center_horizontal"
-        android:padding="10dp" />
+        android:padding="10dp"
+        android:textSize="14sp" />
 </LinearLayout>

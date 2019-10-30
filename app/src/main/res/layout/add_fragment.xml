@@ -24,7 +24,8 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="10dp"
                 android:text="@string/newCatName"
-                android:textSize="24sp" />
+                android:textSize="18sp"
+                android:textStyle="normal" />
 
             <EditText
                 android:id="@+id/Cname"
@@ -32,7 +33,8 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:text="Name" />
+                android:text="Name"
+          />
 
             <TextView
                 android:id="@+id/CFImage"
@@ -41,7 +43,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="10dp"
                 android:text="@string/CFImage"
-                android:textSize="24sp" />
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/imageView2"
@@ -56,13 +58,19 @@
                 android:id="@+id/yes1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/shape"
+                android:minHeight="0dp"
                 android:text="@string/yes" />
 
             <Button
                 android:id="@+id/cancel1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
+                android:layout_margin="10dp"
+                android:background="@drawable/shape"
+                android:minHeight="0dp"
                 android:text="@string/cancel" />
         </LinearLayout>
     </ScrollView>

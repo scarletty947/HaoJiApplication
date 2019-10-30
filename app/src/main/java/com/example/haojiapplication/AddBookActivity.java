@@ -75,6 +75,7 @@ public class AddBookActivity extends AppCompatActivity implements  View.OnClickL
             if (bitmap != null) {
                 Log.i("bimap", "onItemClick:ItemValue" + bitmap);
                 Log.i("bipmap", "onItemClick:ItemValue" + picmanager.img2byte(bitmap));
+                bitmap=compress.compressScale(bitmap);
                 item.setFacePicture(picmanager.img2byte(bitmap));
             } else {
                 Toast.makeText(this, "未选择封面，将使用默认封面~", Toast.LENGTH_SHORT).show();

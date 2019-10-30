@@ -63,6 +63,7 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
         ItemPictureManager manager = new ItemPictureManager(getActivity());
         //数据库获取类别数据
         ItemCategoryManager Categorymanager = new ItemCategoryManager(getActivity());
+        //Categorymanager.delete("世界名著");
         List<CategoryItem> testList=Categorymanager.listALL();
 
         for (CategoryItem i:testList){

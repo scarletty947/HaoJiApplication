@@ -13,6 +13,8 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -193,4 +195,5 @@ public class ReasultActivity extends AppCompatActivity implements SwipeMenuListV
         }
         return false;
     }
+
 }
