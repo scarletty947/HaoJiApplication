@@ -27,7 +27,7 @@ public class ItemPictureManager {
     public byte[] img2byte(Bitmap bitmap)
    {
              ByteArrayOutputStream baos = new ByteArrayOutputStream();
-             bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+             bitmap.compress(Bitmap.CompressFormat.PNG, 10, baos);
              return baos.toByteArray();
          }
          //将字节转换为图片
@@ -53,24 +53,64 @@ public class ItemPictureManager {
         db.insert(TBNAME,null,values);
         db.close();
     }
-
-    //查找
-    public PicItem findByBookName(String bookname){
+    //删除一条记录
+    public void  delete(int id){
+        SQLiteDatabase db=dbHelper.getWritableDatabase();
+        db.delete(TBNAME,"ID=? ",new String[]{String.valueOf(id)});
+        db.close();
+    }
+    //删除一本书
+    public void  deleteByBook(String bookname){
+        SQLiteDatabase db=dbHelper.getWritableDatabase();
+        db.delete(TBNAME,"BOOKNAME=? ",new String[]{bookname});
+        db.close();
+    }
+    //查找id
+    public List<PicItem>  findByBookName(String bookname){
         List<PicItem> picList=null;
         SQLiteDatabase db=dbHelper.getWritableDatabase();
-        Cursor cursor=db.query(TBNAME,null,"BookName=?",new String[]{bookname},null,null,null );
-        PicItem picItem=null;
-        if(cursor!=null&&cursor.moveToNext()){
+        Cursor cursor=db.query(TBNAME,null,"BOOKNAME=?",new String[]{bookname},null,null,null );
+        PicItem picItem;
+        if(cursor!=null){
             picList=new ArrayList<PicItem>();
-            picItem=new PicItem();
-            picItem.setId(cursor.getInt(cursor.getColumnIndex("ID")));
-            picItem.setBookName(cursor.getString(cursor.getColumnIndex("BOOKNAME")));
-            picItem.setNotePicture(cursor.getBlob(cursor.getColumnIndex("NOTEPICTURE")));
-            picList.add(picItem);
+            while (cursor.moveToNext()){
+                picItem=new PicItem();
+                picItem.setId(cursor.getInt(cursor.getColumnIndex("ID")));
+                picItem.setBookName(cursor.getString(cursor.getColumnIndex("BOOKNAME")));
+                picItem.setNotePicture(cursor.getBlob(cursor.getColumnIndex("NOTEPICTURE")));
+                picList.add(picItem);
+            }
             cursor.close();
         }
         db.close();
-        return picItem;
+        return picList;
     }
 
+
+    //查询所有类别
+    public List<PicItem>listALL(){
+        List<PicItem> PicItemList=null;
+        SQLiteDatabase db=dbHelper.getReadableDatabase();
+        Cursor cursor=db.query(TBNAME,null,null,null,null,null,null);
+        if(cursor!=null){
+            PicItemList=new ArrayList<PicItem>();
+            while (cursor.moveToNext()){
+                PicItem item=new PicItem();
+                item.setId(cursor.getInt(cursor.getColumnIndex("ID")));
+                item.setBookName(cursor.getString(cursor.getColumnIndex("BOOKNAME")));
+                item.setNotePicture(cursor.getBlob(cursor.getColumnIndex("NOTEPICTURE")));//大小写也要和建表的时候对应
+                PicItemList.add(item);
+            }
+            cursor.close();
+        }
+        db.close();
+        return PicItemList;
+    }
+
+    //删除全部
+    public void deleteAll(){
+        SQLiteDatabase db=dbHelper.getWritableDatabase();
+        db.delete(TBNAME,null,null);
+        db.close();
+    }
 }

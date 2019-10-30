@@ -56,37 +56,42 @@ public class AddBookActivity extends AppCompatActivity implements  View.OnClickL
     }
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
-                        case R.id.yes2:
-                            String bookName = Bname.getText().toString();
-                            String bookAuthor = Bahtor.getText().toString();
-                            String bookTime= Btime.getText().toString();
-                            ItemManager manager = new ItemManager(this);
-                            BookItem item = new BookItem();
-                            item.setType(categoryName);
-                            item.setBookName(bookName);
-                            item.setAuthor(bookAuthor);
-                            item.setReadTime(bookTime);
-                            ItemPictureManager picmanager = new ItemPictureManager(this);
-                            item.setType(categoryName);
-                            if (bitmap != null) {
-                                Log.i("bimap", "onItemClick:ItemValue" + bitmap);
-                                Log.i("bipmap", "onItemClick:ItemValue" + picmanager.img2byte(bitmap));
-                                item.setFacePicture(picmanager.img2byte(bitmap));
-                            } else {
-                                Toast.makeText(this, "未选择封面，将使用默认封面~", Toast.LENGTH_SHORT).show();
-                            }
-                            manager.add(item);
-                            Intent seccess=new Intent(this,BookListActivity.class);
-                            startActivity(seccess);
-                            break;
-                            case R.id.cancel2:
-                                Intent search=new Intent(this,BookListActivity.class);
-                                startActivity(search);
-                       }
+        String bookName = Bname.getText().toString();
+        String bookAuthor = Bahtor.getText().toString();
+        String bookTime = Btime.getText().toString();
+        ItemManager manager = new ItemManager(this);
+        BookItem item = new BookItem();
+
+        if(manager.findByBookNameandAuthor(bookName,bookAuthor)!=null){
+            Toast.makeText(this, "这本书已经存在了哦~", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            item.setType(categoryName);
+            item.setBookName(bookName);
+            item.setAuthor(bookAuthor);
+            item.setReadTime(bookTime);
+            ItemPictureManager picmanager = new ItemPictureManager(this);
+            item.setType(categoryName);
+            if (bitmap != null) {
+                Log.i("bimap", "onItemClick:ItemValue" + bitmap);
+                Log.i("bipmap", "onItemClick:ItemValue" + picmanager.img2byte(bitmap));
+                item.setFacePicture(picmanager.img2byte(bitmap));
+            } else {
+                Toast.makeText(this, "未选择封面，将使用默认封面~", Toast.LENGTH_SHORT).show();
+            }
+            manager.add(item);
+            Intent seccess = new Intent(this, BookListActivity.class);
+            seccess.putExtra("CategoryName", categoryName);
+            startActivity(seccess);
+        }
+
+
     }
-
-
+    public void onClick1(View v) {
+        Intent sback=new Intent(this,BookListActivity.class);
+        sback.putExtra("CategoryName",categoryName);
+        startActivity(sback);
+    }
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         //用户操作完成，结果码返回是-1，即RESULT_OK
         if (resultCode == RESULT_OK) {

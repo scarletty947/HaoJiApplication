@@ -6,10 +6,7 @@
         android:icon="@drawable/home"
         android:title="@string/title_home" />
 
-    <item
-        android:id="@+id/historyFragment"
-        android:icon="@drawable/recent"
-        android:title="@string/history" />
+
 
     <item
         android:id="@+id/addFragment"
@@ -20,9 +17,6 @@
         android:id="@+id/navigation_notifications"
         android:icon="@drawable/fund"
         android:title="@string/title_notifications" />
-    <item
-        android:id="@+id/navigation_dashboard"
-        android:icon="@drawable/setting"
-        android:title="@string/title_dashboard" />
+
 
 </menu>

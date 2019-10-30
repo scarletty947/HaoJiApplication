@@ -25,18 +25,25 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.io.FileNotFoundException;
 
 public class Picture extends AppCompatActivity implements View.OnClickListener{
-
+    String bookname,author;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_picture);
-
+        Intent content=getIntent();
+        bookname=content.getStringExtra("BookName");
+        author=content.getStringExtra("BookAuthor");
+        Intent content1=new Intent(this, BookContentActivity.class);
+        content1.putExtra("BookName",bookname);
+        content1.putExtra("BookAuthor",author);
+        startActivity(content1);
 
     }
     @Override
     public void onClick(View v) {
-
+        Intent content1=new Intent(this, MainActivity.class);
+        startActivity(content1);
         }
 
 }

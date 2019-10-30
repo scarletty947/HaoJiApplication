@@ -16,6 +16,9 @@
     <string name="bookname">书名</string>
     <string name="bookauthor">作者</string>
     <string name="booktime">阅读时间</string>
+    <string name="mynote">我的笔记</string>
+    <string name="picnote">摘抄-图片</string>
+    <string name="us">上传成功，返回首页</string>
 
 
 </resources>

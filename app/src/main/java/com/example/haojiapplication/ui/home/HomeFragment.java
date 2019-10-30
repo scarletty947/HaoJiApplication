@@ -1,17 +1,24 @@
 package com.example.haojiapplication.ui.home;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.GridView;
+import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -19,19 +26,28 @@ import androidx.fragment.app.Fragment;
 import com.example.haojiapplication.BookListActivity;
 import com.example.haojiapplication.CategoryItem;
 import com.example.haojiapplication.ItemCategoryManager;
+import com.example.haojiapplication.ItemManager;
 import com.example.haojiapplication.ItemPictureManager;
 import com.example.haojiapplication.MyAdapter;
 import com.example.haojiapplication.Picture;
 import com.example.haojiapplication.R;
+import com.example.haojiapplication.ReasultActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class HomeFragment extends Fragment implements AdapterView.OnItemClickListener,AdapterView.OnItemLongClickListener {
+import javax.xml.transform.Result;
+
+public class HomeFragment extends Fragment implements AdapterView.OnItemClickListener,AdapterView.OnItemLongClickListener,SearchView.OnQueryTextListener  {
     GridView gridView;
+    SearchView searchView;
+    private ListView lv;
     private final String TAG ="Gridview";
+    List<Map<String, Object>> listitem;
+    MyAdapter myAdapter;
+    private final String[] mStrings={"aaaaaa","bbbbbb","cccccc"};
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
         return root;
@@ -39,7 +55,8 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
 
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        List<Map<String, Object>> listitem = new ArrayList<Map<String, Object>>();
+        searchView=getView().findViewById(R.id.search);
+        listitem = new ArrayList<Map<String, Object>>();
         gridView=(GridView)getView().findViewById(R.id.gridview);
         String Category;
         Bitmap bitmap;
@@ -65,7 +82,7 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
         }
 
         //自定义Adapter
-        MyAdapter myAdapter=new MyAdapter(getActivity(),R.layout.home_fragment_item, (ArrayList<Map<String,  Object>>) listitem);
+        myAdapter=new MyAdapter(getActivity(),R.layout.home_fragment_item, (ArrayList<Map<String,  Object>>) listitem);
         gridView.setAdapter(myAdapter);
         //当列表没有数据显示设置
        // gridView.setEmptyView(findViewById(R.id.nodata));
@@ -107,6 +124,43 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
         gridView.setOnItemClickListener(this);
         //长按事件
         gridView.setOnItemLongClickListener(this);
+
+        lv=getView().findViewById(R.id.lv);
+        lv.setAdapter(new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,mStrings));
+        lv.setTextFilterEnabled(true);
+
+        //为该SearchView组件设置事件监听器
+        searchView.setOnQueryTextListener(this);
+
+    }
+    //单击搜索按钮时激发该方法
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        //实际应用中应该在该方法内执行实际查询
+        //此处仅使用Toast显示用户输入的查询内容
+        Intent content=new Intent(getActivity(), ReasultActivity.class);
+        content.putExtra("query",query);
+        startActivity(content);
+        Toast.makeText(getActivity(), "您选择的是："+query, Toast.LENGTH_SHORT).show();
+        return false;
+    }
+
+    //用户输入字符时激发该方法
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        // TODO Auto-generated method stub
+        if(TextUtils.isEmpty(newText))
+        {
+            //清楚ListView的过滤
+            lv.clearTextFilter();
+        }
+        else
+        {
+            //使用用户输入的内容对ListView的列表项进行过滤
+            lv.setFilterText(newText);
+
+        }
+        return true;
     }
 
     @Override
@@ -151,7 +205,25 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
     }
 
     @Override
-    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+    public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+        AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
+        builder.setTitle("提示")
+                .setMessage("是否删除该类别（类别下的所有书也会被删除哦~）")
+                .setPositiveButton("是", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //删除数据项
+                        Map<String, Object>  item=listitem.get(position);
+                        ItemCategoryManager itemCategoryManager=new ItemCategoryManager(getActivity());
+                        ItemManager itemManager=new ItemManager(getActivity());
+                        itemManager.deleteByType(String.valueOf(item.get("ItemText")));
+                        itemCategoryManager.delete(String.valueOf(item.get("ItemText")));
+                        myAdapter.remove(gridView.getItemAtPosition(position));
+                        //更新适配器
+                        //ArryAdapter会自动调用
+                    }
+                }).setNegativeButton("否",null);
+        builder.create().show();
         return false;
     }
 }

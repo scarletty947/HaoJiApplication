@@ -11,11 +11,6 @@
         android:label="@string/app"
         tools:layout="@layout/fragment_home" />
     <fragment
-        android:id="@+id/historyFragment"
-        android:name="com.example.haojiapplication.ui.history.HistoryFragment"
-        android:label="@string/history"
-        tools:layout="@layout/history_fragment" />
-    <fragment
         android:id="@+id/addFragment"
         android:name="com.example.haojiapplication.ui.add.AddFragment"
         android:label="@string/add"
@@ -25,9 +20,4 @@
         android:name="com.example.haojiapplication.ui.notifications.NotificationsFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
-    <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.example.haojiapplication.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
 </navigation>

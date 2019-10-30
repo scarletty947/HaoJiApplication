@@ -72,6 +72,50 @@ public class ItemManager {
         return BookItem;
     }
 
+    //按书名和作者查找
+    public BookItem findByBookNameandAuthor(String bookname,String author){
+        SQLiteDatabase db=dbHelper.getWritableDatabase();
+        Cursor cursor=db.query(TBNAME,null,"BookName=? and AUTHOR=?",new String[]{bookname,author},null,null,null );
+        BookItem BookItem=null;
+        if(cursor!=null&&cursor.moveToNext()){
+            BookItem=new BookItem();
+            BookItem.setId(cursor.getInt(cursor.getColumnIndex("ID")));
+            BookItem.setBookName(cursor.getString(cursor.getColumnIndex("BOOKNAME")));
+            BookItem.setFacePicture(cursor.getBlob(cursor.getColumnIndex("FACEPICTURE")));
+            BookItem.setAuthor(cursor.getString(cursor.getColumnIndex("AUTHOR")));
+            BookItem.setReadTime(cursor.getString(cursor.getColumnIndex("READTIME")));
+            BookItem.setNote(cursor.getString(cursor.getColumnIndex("NOTE")));
+            BookItem.setType(cursor.getString(cursor.getColumnIndex("TYPE")));
+            cursor.close();
+        }
+        db.close();
+        return BookItem;
+    }
+
+    //按书名或作者模糊查找
+    public List<BookItem>  findByBookNameandAuthor2(String bookname,String author){
+        List<BookItem> BookList=new ArrayList<BookItem>();
+        SQLiteDatabase db=dbHelper.getWritableDatabase();
+        Cursor cursor=db.query(TBNAME,null,"BookName LIKE? or AUTHOR LIKE?",new String[]{"%"+bookname+"%","%"+author+"%"},null,null,null );
+        if(cursor!=null){
+            while (cursor.moveToNext()){
+                BookItem item=new BookItem();
+                item.setId(cursor.getInt(cursor.getColumnIndex("ID")));
+                item.setBookName(cursor.getString(cursor.getColumnIndex("BOOKNAME")));
+                item.setFacePicture(cursor.getBlob(cursor.getColumnIndex("FACEPICTURE")));
+                item.setAuthor(cursor.getString(cursor.getColumnIndex("AUTHOR")));
+                item.setReadTime(cursor.getString(cursor.getColumnIndex("READTIME")));
+                item.setNote(cursor.getString(cursor.getColumnIndex("NOTE")));
+                item.setType(cursor.getString(cursor.getColumnIndex("TYPE")));
+                BookList.add(item);
+            }
+            cursor.close();
+        }
+        db.close();
+        return BookList;
+    }
+
+
     //按类别查找所有书目
     public List<BookItem> findByBookType(String booktype){
         List<BookItem> BookList=new ArrayList<BookItem>();
@@ -122,13 +166,18 @@ public class ItemManager {
         values.put("ReadTime",item.getReadTime());
         values.put("Note",item.getNote());
         values.put("Type",item.getType());
-        db.update(TBNAME,values,"ID=?",new String[]{String.valueOf(item.getId())});
+        db.update(TBNAME,values,"BookName=? and AUTHOR=?",new String[]{item.getBookName(),item.getAuthor()});
         db.close();
     }
     //删除一条记录
-    public void  delete(int id){
+    public void  delete(String bookname,String author){
         SQLiteDatabase db=dbHelper.getWritableDatabase();
-        db.delete(TBNAME,"ID=?",new String[]{String.valueOf(id)});
+        db.delete(TBNAME,"BookName=? and AUTHOR=?",new String[]{bookname,author});
+        db.close();
+    }
+    public void  deleteByType(String type){
+        SQLiteDatabase db=dbHelper.getWritableDatabase();
+        db.delete(TBNAME,"TYPE=?",new String[]{type});
         db.close();
     }
     //删除全部
